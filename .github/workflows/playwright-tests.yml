@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: false
 
       - name: Install dependencies
         run: npm install
@@ -58,20 +58,10 @@ jobs:
             screenshots/
           retention-days: 3
 
-      - name: Upload Playwright report
+      - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-html-report
           path: playwright-report/
           retention-days: 3
-
-### Notes
-# To block merges when tests fail, configure branch protection in GitHub:
-# 1. Go to Repository Settings → Branches.
-# 2. Under "Branch protection rules", click "Add rule".
-# 3. Set the branch name pattern to: main
-# 4. Enable the following options:
-#    - "Require status checks to pass before merging"
-#      → Select the workflow named: Playwright Tests
-#    - (Optional) "Require branches to be up to date before merging"
