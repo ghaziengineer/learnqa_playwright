@@ -75,3 +75,27 @@ Then("I should be remain on to the {string} page", async function (type: string)
       throw new Error(`Unknown page type: ${type}`);
   }
 });
+
+
+Given("I navigate to {string} page", async function (pageName: string) {
+  switch (pageName) {
+    case "Drag and Drop": 
+      await this.page.locator('span').getByText('Drag and Drop').click();
+      await expect(this.page).toHaveURL(/.*drag-and-drop/);
+      break;
+    case "File Operations": 
+      await this.page.locator('span').getByText('File Operations').click();
+      await expect(this.page).toHaveURL(/.*file-operations/);
+      break;
+    case "Dynamic Elements": 
+      await this.page.locator('span').getByText('Dynamic Elements').click();
+      await expect(this.page).toHaveURL(/.*dynamic-elements/);
+      break;
+    case "Keyboard and Mouse Events": 
+      await this.page.locator('span').getByText('Keyboard & Mouse Events').click();
+      await expect(this.page).toHaveURL(/.*keyboard-mouse-events/);
+      break;
+    default:
+      throw new Error(`Page "${pageName}" is not mapped for navigation.`);
+  }
+});
