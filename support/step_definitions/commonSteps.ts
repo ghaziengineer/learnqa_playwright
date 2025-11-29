@@ -2,6 +2,7 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { SignInPage } from '../pages/SignInPage';
+import { DragAndDropPage } from '../pages/DragAndDropPage';
 
 Given("I open the homepage", async function () {
   const homePage = new HomePage(this.page);
@@ -11,6 +12,7 @@ Given("I open the homepage", async function () {
 When("I click on the {string} button", async function (buttonText: string) {
   const homePage = new HomePage(this.page);
   const signInPage = new SignInPage(this.page);
+  const dragAndDropPage = new DragAndDropPage(this.page);
 
   switch(buttonText) {
     case "Top Sign In":
@@ -29,6 +31,15 @@ When("I click on the {string} button", async function (buttonText: string) {
       await expect(signInPage.logoutButton).toBeVisible();
       await signInPage.logoutButton.click();
       break;
+     case "Add Item":
+      await expect(dragAndDropPage.addItemButton).toBeVisible();
+      await dragAndDropPage.clickAddItem();
+      break;
+    case "Reset":
+      await expect(dragAndDropPage.resetButton).toBeVisible();
+      await dragAndDropPage.clickReset();
+      break;
+    
     default:
       throw new Error(`Button "${buttonText}" not mapped in pages`);
   }
