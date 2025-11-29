@@ -28,7 +28,6 @@ It is designed to help practice **real-world automation scenarios** 🧪
 │   ├───fixtures
 │   │   ├───template_data.xlsx
 │   │   └───testData.json
-│   ├───screenshots
 │   └───support
 │   │   └───pages
 │   │       ├───HomePage.ts
@@ -63,13 +62,13 @@ npm install
 ```
 **3.** Run tests:
 ```bash
-npx cypress open
+$env:HEADED="true"; npx cucumber-js
 ```
 ## ⚠️ Important Notes
 - ⚙️ **Environment Setup** – Ensure Node.js and Cypress are properly installed before running any test.  
 - 🏷️ **Tag Management** – Use tags (like @ui, @e2e, @valid etc...) 👉 to easily filter and run specific scenarios with commands such as:  
 ```bash
-npx cucumber-js --tags "@ui"
+$env:HEADED="true"; npx cucumber-js --tags "@ui"
 ```
 
 ![Profile view counter on GitHub](https://komarev.com/ghpvc/?username=ghaziengineer)
