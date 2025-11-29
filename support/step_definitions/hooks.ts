@@ -6,14 +6,23 @@ let context: BrowserContext;
 let page: Page;
 
 Before({ timeout: 60000 }, async function () {
-  // Read headed mode from environment variable
-  const headed = process.env.HEADED === 'true';
+  // Detect CI environment - GitHub Actions sets CI=true
+  const isCI = process.env.CI === 'true';
   
-  browser = await chromium.launch({ 
-    headless: false, // Always show browser when HEADED=true
-    slowMo: 500, // Slow down by 500ms to see what's happening
+  const launchOptions: any = {
     timeout: 60000
-  });
+  };
+  
+  if (isCI) {
+    // Always headless in CI
+    launchOptions.headless = true;
+  } else {
+    // Headless based on HEADED env var locally
+    launchOptions.headless = process.env.HEADED !== 'true';
+    launchOptions.slowMo = process.env.HEADED === 'true' ? 500 : 0;
+  }
+  
+  browser = await chromium.launch(launchOptions);
   context = await browser.newContext({
     viewport: { width: 1280, height: 720 }
   });
@@ -23,10 +32,6 @@ Before({ timeout: 60000 }, async function () {
 
 After(async function () {
   try {
-    if (process.env.HEADED === 'true') {
-      await this.page.waitForTimeout(2000);
-    }
-    
     if (page) await page.close();
     if (context) await context.close();
     if (browser) await browser.close();
