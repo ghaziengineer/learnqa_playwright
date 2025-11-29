@@ -1,0 +1,66 @@
+import { Given, When, Then } from '@cucumber/cucumber';
+import { expect } from '@playwright/test';
+import { HomePage } from '../pages/HomePage';
+import { SignInPage } from '../pages/SignInPage';
+
+Given("I open the homepage", async function () {
+  const homePage = new HomePage(this.page);
+  await homePage.visit();
+});
+
+When("I click on the {string} button", async function (buttonText: string) {
+  const homePage = new HomePage(this.page);
+  const signInPage = new SignInPage(this.page);
+
+  switch(buttonText) {
+    case "Top Sign In":
+      await expect(homePage.topSignInButton).toBeVisible();
+      await homePage.topSignInButton.click();
+      break;
+    case "Middle Sign In":
+      await expect(homePage.middleSignInButton).toBeVisible();
+      await homePage.middleSignInButton.click();
+      break;
+    case "Try Without Account":
+      await expect(homePage.tryWithoutAccountButton).toBeVisible();
+      await homePage.tryWithoutAccountButton.click();
+      break;
+    case "Logout":
+      await expect(signInPage.logoutButton).toBeVisible();
+      await signInPage.logoutButton.click();
+      break;
+    default:
+      throw new Error(`Button "${buttonText}" not mapped in pages`);
+  }
+});
+
+Then("I should be redirected to the {string} page", async function (type: string) {
+  const homePage = new HomePage(this.page);
+  const signInPage = new SignInPage(this.page);
+
+  switch (type) {
+    case "dashboard":
+      await expect(this.page).toHaveURL(/.*dashboard/);
+      await expect(signInPage.dashboard).toBeVisible();
+      break;
+    case "home":
+      await expect(this.page).toHaveURL(/\//);
+      await expect(homePage.title).toBeVisible();
+      break;
+    case "sign in": 
+      await expect(this.page).toHaveURL(/.*login/);
+      break;
+    default:
+      throw new Error(`Unknown page type: ${type}`);
+  }
+});
+
+Then("I should be remain on to the {string} page", async function (type: string) {
+  switch (type) {
+    case "sign in": 
+      await expect(this.page).toHaveURL(/.*login/);
+      break;
+    default:
+      throw new Error(`Unknown page type: ${type}`);
+  }
+});

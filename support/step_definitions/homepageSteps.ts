@@ -2,10 +2,6 @@ import { Given, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 
-Given("I open the homepage", async function () {
-  const homePage = new HomePage(this.page);
-  await homePage.visit();
-});
 
 Then("I should see the homepage title {string}", async function (titleText: string) {
   const homePage = new HomePage(this.page);
