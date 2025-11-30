@@ -1,5 +1,8 @@
-import { Before, After } from '@cucumber/cucumber';
+import { Before, After, setDefaultTimeout  } from '@cucumber/cucumber';
 import { Browser, BrowserContext, Page, chromium } from '@playwright/test';
+
+// Set global timeout for all steps (30 seconds)
+setDefaultTimeout(30 * 1000);
 
 let browser: Browser;
 let context: BrowserContext;
