@@ -47,6 +47,20 @@ jobs:
       - name: Run Playwright tests
         run: npm test
 
+      # ✅ BUILD AUTOMATION FRAMEWORK ZIP
+      - name: Build automation package
+        run: |
+          zip -r playwright-tests.zip . -x "node_modules/*" ".git/*" "test-results/*" "playwright-report/*"
+
+      # ✅ UPLOAD ZIP FOR MANUAL TESTERS
+      - name: Upload automation build
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-framework
+          path: playwright-tests.zip
+          retention-days: 7
+
+      # TEST RESULTS
       - name: Upload Playwright test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -57,6 +71,7 @@ jobs:
             screenshots/
           retention-days: 3
 
+      # HTML REPORT
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
